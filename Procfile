@@ -1,1 +1,0 @@
-web: java -ea -cp target/classes setgame.ServerMain "$PORT" 4
