@@ -1,13 +1,6 @@
-FROM cgr.dev/chainguard/maven:openjdk-17
+FROM ghcr.io/graalvm/native-image-community:22
 
-WORKDIR /home/build
-
-COPY . ./
-
-RUN mvn install
-
-FROM cgr.dev/chainguard/jre:openjdk-17
-
-COPY --from=0 /home/build/target /app
-
-CMD ["-ea", "-cp", "/app/classes", "setgame.ServerMain", "8080", "4"]
+RUN microdnf install findutils
+COPY src/main/java/setgame setgame
+RUN find setgame -name "*.java" | xargs javac
+RUN native-image -cp . setgame.ServerMain
